@@ -21,7 +21,7 @@ class Init {
 		add_action( 'save_post', array( __CLASS__, 'save_post' ), 10, 2 );
 		add_action( 'syndicate_to_bluesky_refresh_token', [ __CLASS__, 'refresh_token' ] );
 
-		register_deactivation_hook( SYNDICATE_TO_BLUESKY_PLUGIN_FILE, [ __CLASS__, 'deactivation_hook' ] );
+		register_deactivation_hook( PLUGIN_FILE, [ __CLASS__, 'deactivation_hook' ] );
 	}
 
 	/**

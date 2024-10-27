@@ -36,7 +36,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-const PLUGIN_DIR = __DIR__;
 const PLUGIN_FILE = __FILE__;
 
 require_once __DIR__ . '/vendor/autoload.php';
