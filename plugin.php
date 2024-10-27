@@ -42,4 +42,4 @@ define( 'SYNDICATE_TO_BLUESKY_PLUGIN_FILE', __FILE__ );
 require_once __DIR__ . '/vendor/autoload.php';
 
 // Initialize the plugin.
-Init::init();
+add_action( 'plugins_loaded', array( 'SyndicateToBluesky\\Init', 'init' ) );
