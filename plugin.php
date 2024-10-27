@@ -36,8 +36,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'SYNDICATE_TO_BLUESKY_PLUGIN_DIR', __DIR__ );
-define( 'SYNDICATE_TO_BLUESKY_PLUGIN_FILE', __FILE__ );
+const PLUGIN_DIR = __DIR__;
+const PLUGIN_FILE = __FILE__;
 
 require_once __DIR__ . '/vendor/autoload.php';
 
