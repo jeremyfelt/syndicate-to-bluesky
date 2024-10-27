@@ -247,6 +247,7 @@ class Connection {
 		) {
 			$this->set_access_jwt( sanitize_text_field( $data['accessJwt'] ) );
 			$this->set_refresh_jwt( sanitize_text_field( $data['refreshJwt'] ) );
+			update_option( 'syndicate_to_bluesky_token_refreshed', time() );
 		}
 	}
 
@@ -256,11 +257,18 @@ class Connection {
 	 * @param \WP_Post $post The post ID.
 	 */
 	public function syndicate_post( \WP_Post $post ): void {
+
+		$last_refreshed = get_option( 'syndicate_to_bluesky_token_refreshed' );
+
 		/**
-		 * We should check to see if the token has been refreshed recently
-		 * and only refresh it if it has been a while.
+		 * Refresh the token after 2 days if not already refreshed.
+		 *
+		 * The scheduled event should renew this daily, but it doesn't hurt to
+		 * check on demand as well.
 		 */
-		$this->refresh_token();
+		if ( ! $last_refreshed || time() - $last_refreshed > 2 * DAY_IN_SECONDS ) {
+			$this->refresh_token();
+		}
 
 		if ( ! $this->get_access_jwt() || ! $this->get_did() || ! $this->get_domain() ) {
 			return;
