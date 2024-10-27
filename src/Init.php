@@ -16,12 +16,24 @@ class Init {
 	 * Initialize the plugin.
 	 */
 	public static function init(): void {
+		add_action( 'init', [ __CLASS__, 'log_activation' ] );
 		add_action( 'init', [ __CLASS__, 'schedule_events' ] );
 		add_action( 'init', array( __CLASS__, 'init_admin' ), 100 );
 		add_action( 'save_post', array( __CLASS__, 'save_post' ), 10, 2 );
 		add_action( 'syndicate_to_bluesky_refresh_token', [ __CLASS__, 'refresh_token' ] );
 
 		register_deactivation_hook( PLUGIN_FILE, [ __CLASS__, 'deactivation_hook' ] );
+	}
+
+	/**
+	 * Log the activation of the plugin.
+	 *
+	 * This allows us to automatically send new published content to Bluesky
+	 * when something is published without accidentally publishing content
+	 * that existed on the site before activation.
+	 */
+	public static function log_activation(): void {
+		update_option( 'syndicate_to_bluesky_activated', time() );
 	}
 
 	/**
@@ -66,6 +78,13 @@ class Init {
 		}
 
 		if ( get_post_meta( $post_id, '_syndicate_to_bluesky', true ) ) {
+			return;
+		}
+
+		$activated = get_option( 'syndicate_to_bluesky_activated' );
+
+		// Only syndicate posts that were published after initial activation.
+		if ( $activated && $activated > strtotime( $post->post_date_gmt ) ) {
 			return;
 		}
 
