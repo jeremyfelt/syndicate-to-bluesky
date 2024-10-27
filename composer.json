@@ -1,0 +1,35 @@
+{
+	"name": "jeremyfelt/syndicate-to-bluesky",
+	"authors": [
+	  {
+		"name": "Jeremy Felt"
+	  }
+	],
+	"version": "0.0.1",
+	"type": "wordpress-plugin",
+	"license": "GPLv2+",
+	"config": {
+		"allow-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": true,
+			"composer/installers": true,
+			"phpstan/extension-installer": true
+		},
+		"platform": {
+			"php": "7.4"
+		}
+	},
+	"autoload": {
+	  "psr-4": {
+		  "SyndicateToBluesky\\": "src/"
+	  }
+	},
+	"require-dev": {
+		"happyprime/coding-standards": "*",
+		"phpcompatibility/php-compatibility": "dev-develop as 9.99.99"
+	},
+	"scripts": {
+		"phpcs": "vendor/bin/phpcs",
+		"phpcbf": "vendor/bin/phpcbf",
+		"phpstan": "vendor/bin/phpstan analyse --memory-limit=2048M"
+	}
+  }
